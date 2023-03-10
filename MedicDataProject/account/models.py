@@ -40,7 +40,7 @@ class ExpedienteO(models.Model):
 
 class ExpedienteD(models.Model):
     nombreD = models.CharField(max_length=255, verbose_name='Nombre del paciente')
-    NDiente = models.CharField(max_length=255, verbose_name='Nombre del paciente')
+    NDiente = models.CharField(max_length=255, verbose_name='Nombre del diente')
     Descripcion= models.CharField(max_length=255, verbose_name="Descripcion")
     fechaD=models.DateTimeField(auto_now_add=True)
     fecha_actD=models.DateField(auto_now=True)

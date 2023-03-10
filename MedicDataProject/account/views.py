@@ -102,9 +102,94 @@ def editorg(request):
     }
     return render(request, 'account/expedienteg.html', context)
 
+def editoro(request):
+
+    expoid = int(request.GET.get('expoid', 0))
+    expedienteso = ExpedienteO.objects.all()
+
+    if request.method == 'POST':
+        expoid = int(request.POST.get('expoid', 0))
+        nombreO = request.POST.get('nombreO')
+        gojoD = request.POST.get('gojoD')
+        gojoI = request.POST.get('gojoI')
+        padecimientos = request.POST.get('padecimientos')
+        cambioMicas = request.POST.get('cambioMicas')
+
+        if expoid > 0:
+            expedienteo = ExpedienteO.objects.get(pk=expoid)
+            expedienteo.nombreO = nombreO
+            expedienteo.gojoD = gojoD
+            expedienteo.gojoI = gojoI
+            expedienteo.padecimientos = padecimientos
+            expedienteo.cambioMicas = cambioMicas
+            expedienteo.save()
+
+            return redirect('/?expoid=%i' % expoid)
+        else:
+            expedienteo = ExpedienteO.objects.create(nombreO=nombreO, gojoD = gojoD, gojoI = gojoI, padecimientos = padecimientos, cambioMicas = cambioMicas) 
+
+            return redirect('/?expoid=%i' % expedienteo.id)
+
+    if expoid > 0:
+        expedienteo = ExpedienteO.objects.get(pk=expoid)
+    else:
+        expedienteo = ''
+
+    context = {
+        'expoid': expoid,
+        'expedienteso' : expedienteso,
+        'expedienteo' : expedienteo,
+    }
+    return render(request, 'account/expedienteo.html', context)
+
+def editord(request):
+    expdid = int(request.GET.get('expdid', 0))
+    expedientesd = ExpedienteD.objects.all()
+
+    if request.method == 'POST':
+        expdid = int(request.POST.get('expdid', 0))
+        nombreD = request.POST.get('nombreD')
+        NDiente = request.POST.get('NDiente')
+        Descripcion = request.POST.get('Descripcion')
+    
+        if expdid > 0:
+            expediented = ExpedienteD.objects.get(pk=expdid)
+            expediented.nombreD = nombreD
+            expediented.NDiente = NDiente
+            expediented.Descripcion = Descripcion
+            expediented.save()
+
+            return redirect('/?expdid=%i' % expdid)
+        else:
+            expediented = ExpedienteD.objects.create(nombreD=nombreD, NDiente = NDiente, Descripcion = Descripcion) 
+
+            return redirect('/?expdid=%i' % expediented.id)
+
+    if expdid > 0:
+        expediented = ExpedienteD.objects.get(pk=expdid)
+    else:
+        expediented = ''
+
+    context = {
+        'expdid': expdid,
+        'expedientesd' : expedientesd,
+        'expediented' : expediented,
+    }
+    return render(request, 'account/expediented.html', context)
+
 def delete_expedienteg(request, expgid):
     expedienteg = ExpedienteG.objects.get(pk=expgid)
     expedienteg.delete()
 
     return redirect('/?expgid=0')
 
+def delete_expedienteo(request, expoid):
+    expedienteo = ExpedienteO.objects.get(pk=expoid)
+    expedienteo.delete()
+    return redirect('/?expoid=0')
+
+def delete_expediented(request, expdid):
+    expediented = ExpedienteD.objects.get(pk=expdid)
+    expediented.delete()
+
+    return redirect('/?expdid=0')
